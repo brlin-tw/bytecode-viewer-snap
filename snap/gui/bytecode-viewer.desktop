@@ -4,8 +4,8 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=My Awesome App.
-Comment=The demonstration application of Snapcrafters Template Plus
-Exec=my-awesome-app
-Icon=${SNAP}/meta/gui/my-awesome-app.png
-Categories=Development
+Name=Bytecode Viewer
+Comment=An advanced yet user friendly Java Reverse Engineering suite 
+Exec=bytecode-viewer
+Icon=${SNAP}/meta/gui/bytecode-viewer.png
+Categories=Development;Utility

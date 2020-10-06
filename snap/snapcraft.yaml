@@ -1,6 +1,6 @@
 %YAML 1.1
 ---
-# Snapcraft Recipe for [Project]
+# Snapcraft Recipe for Bytecode Viewer
 # ------------------------------
 # This file is in the YAML data serialization format:
 # http://yaml.org
@@ -17,30 +17,54 @@
 # All following comments, including this one, are designed to be stripped
 # before contributing the recipe to the upstream
 
-# [Project], my-awesome-app, my-awesome-app-launch
-# are placeholders text meant to be replaced by appropriate content
-name: my-awesome-app
-title: My Awesome App.
-summary: Single-line elevator pitch for your amazing snap under 79 chars.
+name: bytecode-viewer
+title: Bytecode Viewer
+summary: An advanced yet user friendly Java Reverse Engineering suite
 description: |
-  This is my-awesome-app's description. You have a paragraph or two to tell
-  the most important story about your snap. Keep it under 100 words though,
-  we live in tweetspace and your description wants to look good in the snap
-  store.
+  Six different Java decompilers, two Bytecode editors, a Java compiler,
+  plugins, searching, supports loading from Classes, Jars, Android APKs
+  and more.
 
-  This is the demonstration app of the Snapcrafters Template Plus:
-  https://github.com/Lin-Buo-Ren/snapcrafters-template-plus
+  **Features**
+
+  - Easy to use yet extremely effective.
+  - Written to run on Java 7, supports Java 8.
+  - **Compile** Decompiled Java classes with Ranino Compiler.
+  - Quickly decompile classes using JD-Core.
+  - Easily edit APKs via Smali/Baksmali integration.
+  - Java Decompiling with Six different decompilers (DJ-GUI/Core, Procyon,
+    CFR, Fernflower, Krakatau, and JADX-Core).
+  - Bytecode Decompiling with CFIDE.
+  - Android APK integrated with Dex2Jar.
+  - Securely launch Java applications and insert hooks via EZ-Injection.
+  - Scan for malicious code with the Malicious Code Scanner plugin.
+  - Export as DEX, Jar, Class, Zip or Java Source File.
+  - Open Android APKs, Android DEX, Java Class Files and Java Jars. (WAR
+    & JSP Support!)
+  - Extensively configurable, **over 100+ settings**!
+  - Works seamlessly with all Operating Systems.
+  - Integrate BCV into Windows by installing it, it'll associate all .class,
+    .dex and .apk to open with BCV.
+  - View Jar & APK Resources with ease by APKTool.jar integration.
+  - 100% free and open sourced under GPL v3 CopyLeft.
+
+  **Snap-specific notes**
+
+  This is NOT an official distribution of Bytecode Viewer, please avoid
+  filing snap issues to the upstream's project issue tracker as they are
+  not responsible for the snap packaging, use the "Contact _publisher_name_"
+  link below instead.
 
 # The path of icon to represent the snap, relative to the source tree directory
 # Only PNG or SVG image is supported, dimension must be greater than 256x256px
-icon: snap/gui/my-awesome-app.png
+icon: snap/gui/bytecode-viewer.png
 
 # The license of this application, in SPDX format
 # NOTE: Currently only supports SPDX 2.1 license expressions, as described in Appendix IV of
 # https://spdx.org/spdx-specification-21-web-version
 # Supported expressions:
 # https://github.com/snapcore/snapd/blob/HEAD/spdx/licenses.go
-#license:
+license: GPL-3.0
 
 # Version string just for humans, typically '1.2+git' or '1.3.2'
 # The wrapping single quotes are often required to avoid the version string
@@ -159,21 +183,19 @@ parts:
     # for override-pull script
     - scriptlets
 
-    source: .
-    #source-type:
-    #source-branch:
-    #source-tag:
-    #source-depth:
+    source: https://github.com/Konloch/bytecode-viewer.git
+    source-depth: 200
     override-pull: |
       set -o nounset
 
       snapcraftctl pull
 
-      "${SNAPCRAFT_STAGE}"/scriptlets/main-adopt-info
+      "${SNAPCRAFT_STAGE}"/scriptlets/selective-checkout \
+        --append-packaging-version
 
     plugin: dump
     organize:
-      my-awesome-app: bin/
+      bytecode-viewer: bin/
     stage:
     - bin/*
 
@@ -190,23 +212,23 @@ parts:
 # with `_snap_name_` or `snap run _snap_name_` commands, otherwise it can only be run
 # via `_snap_name_._app_name_` or `snap run _snap_name_._app_name_`
 apps:
-  my-awesome-app:
+  bytecode-viewer:
     # The adapter to set up runtime environment at the launch of the snap
     # NOTE: The `command-chain` property is only supported by the `full` adapter
     adapter: full
 
     # An *relative path* to an executable file root from the `prime` directory to be executed, and its command-line arguments
     # NOTE: The right angle bracket at the beginning of the value of the `command` keyword starts a YAML folded style block scalar, refer the following spec document for more info: http://yaml.org/spec/1.2/spec.html#id2796251
-    command: bin/my-awesome-app
+    command: bin/bytecode-viewer
 
     # The commands that are run, in order, before running the one specified by the `command` key
     command-chain:
     - bin/desktop-launch
-    - bin/my-awesome-app-launch
+    - bin/bytecode-viewer-launch
 
     # If the providing part of the app. has a desktop entry, specify its path relative to the `prime` directory.
     # If the packaging target doesn't provide a desktop entry, ignore the `desktop` key and implement a desktop entry in `/snap/gui`
-    #desktop: share/applications/my-awesome-app.desktop
+    desktop: meta/gui/bytecode-viewer.desktop
 
 # Refer the following documentation for asserting interface plugs and slots in a security confined snap:
 # Interface management - doc - snapcraft.io
@@ -256,11 +278,11 @@ plugs:
   #user-wide-configs:
     #interface: personal-files
     #read:
-    #- $HOME/.config/my-awesome-app
+    #- $HOME/.config/bytecode-viewer
   #system-wide-configs:
     #interface: system-files
     #read:
-    #- /etc/my-awesome-app
+    #- /etc/bytecode-viewer
 
   # Network access
   #network:
