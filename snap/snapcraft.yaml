@@ -81,7 +81,7 @@ adopt-info: main
 # Snapd feature set and version the snap requires in order to work
 # https://forum.snapcraft.io/t/snapcraft-top-level-metadata/8334#heading--assumes
 assumes:
-- command-chain
+  - command-chain
 
 # Base runtime
 # The common runtime for the snap to run on, or `bare` for static linked applications
@@ -113,7 +113,7 @@ parts:
     organize:
       '*': patching/
     prime:
-    - -*
+      - -*
 
   # Launcher programs to fix problems at runtime
   launchers:
@@ -122,7 +122,7 @@ parts:
     organize:
       '*': bin/
     stage:
-    - -bin/README.*
+      - -bin/README.*
 
   # Programs to modify the behavior of each step of the snapcraft lifecycles
   scriptlets:
@@ -131,28 +131,28 @@ parts:
     organize:
       '*': scriptlets/
     prime:
-    - -*
+      - -*
 
   # Stage snap for fixing the glibc locales(and gnu gettext I18N support)
   # This part is only required for non GUI apps that don't uses the desktop-launch launchers
   #locales-launch:
     #plugin: nil
     #stage-snaps:
-    #- locales-launch
+      #- locales-launch
     #stage-packages:
-    # For localedef(1)
-    #- libc-bin
+      ## For localedef(1)
+      #- libc-bin
 
-    # For locale data used by localedef(1)
-    #- locales
+      ## For locale data used by localedef(1)
+      #- locales
 
-    # All pre-generated locale data
-    # DISABLED: Lots of duplicate data will be included in snap when this is staged, unless the target machine has no resource to generate them in runtime otherwise not using it
-    #
-    #   Lack of compiled locales breaks gettext based localisation - snapcraft - snapcraft.io
-    #   https://forum.snapcraft.io/t/lack-of-compiled-locales-breaks-gettext-based-localisation/3758
-    #
-    #- locales-all
+      # All pre-generated locale data
+      # DISABLED: Lots of duplicate data will be included in snap when this is staged, unless the target machine has no resource to generate them in runtime otherwise not using it
+      #
+      #   Lack of compiled locales breaks gettext based localisation - snapcraft - snapcraft.io
+      #   https://forum.snapcraft.io/t/lack-of-compiled-locales-breaks-gettext-based-localisation/3758
+      #
+      #- locales-all
 
   # Remote part for support of various desktop technologies
   # Refer: https://github.com/ubuntu/snapcraft-desktop-helpers/blob/master/snapcraft.yaml
@@ -163,25 +163,25 @@ parts:
 
     plugin: make
     build-packages:
-    - gcc
+      - gcc
     override-build: |
       snapcraftctl build
       mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
 
   # Integrate custom dialogs in your snap - doc - snapcraft.io
   # https://forum.snapcraft.io/t/integrate-custom-dialogs-in-your-snap/10825
-  zenity-integration:
-    plugin: nil
-    stage-snaps:
-    - zenity-integration
+  # zenity-integration:
+  #   plugin: nil
+  #   stage-snaps:
+  #     - zenity-integration
 
   main:
     after:
-    # for patch-desktop-entries.*
-    - patching
+      # for patch-desktop-entries.*
+      - patching
 
-    # for override-pull script
-    - scriptlets
+      # for override-pull script
+      - scriptlets
 
     source: https://github.com/Konloch/bytecode-viewer.git
     source-depth: 200
@@ -197,7 +197,7 @@ parts:
     organize:
       bytecode-viewer: bin/
     stage:
-    - bin/*
+      - bin/*
 
     override-prime: |
       set \
