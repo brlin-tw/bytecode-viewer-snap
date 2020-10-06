@@ -223,8 +223,8 @@ apps:
 
     # The commands that are run, in order, before running the one specified by the `command` key
     command-chain:
-    - bin/desktop-launch
-    - bin/bytecode-viewer-launch
+      - bin/desktop-launch
+      - bin/bytecode-viewer-launch
 
     # If the providing part of the app. has a desktop entry, specify its path relative to the `prime` directory.
     # If the packaging target doesn't provide a desktop entry, ignore the `desktop` key and implement a desktop entry in `/snap/gui`
@@ -278,11 +278,11 @@ plugs:
   #user-wide-configs:
     #interface: personal-files
     #read:
-    #- $HOME/.config/bytecode-viewer
+      #- $HOME/.config/bytecode-viewer
   #system-wide-configs:
     #interface: system-files
     #read:
-    #- /etc/bytecode-viewer
+      #- /etc/bytecode-viewer
 
   # Network access
   #network:
