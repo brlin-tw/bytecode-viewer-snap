@@ -57,7 +57,7 @@ description: |
 
 # The path of icon to represent the snap, relative to the source tree directory
 # Only PNG or SVG image is supported, dimension must be greater than 256x256px
-icon: snap/gui/bytecode-viewer.png
+icon: snap/gui/bcv-icon.200px.png
 
 # The license of this application, in SPDX format
 # NOTE: Currently only supports SPDX 2.1 license expressions, as described in Appendix IV of
@@ -73,10 +73,11 @@ license: GPL-3.0
 # https://arp242.net/weblog/yaml_probably_not_so_great_after_all.html#surprising-behaviour
 # NOTE: This key is mutual exclusive with the `adopt-info` key
 #version: Derived from the part specified by the `adopt-info` property
+version: 2.9.22
 
 # Extract metadata from the main snap part
 # https://forum.snapcraft.io/t/extracting-information-from-sources-in-snapcraft-parts/4642
-adopt-info: main
+#adopt-info: main
 
 # Snapd feature set and version the snap requires in order to work
 # https://forum.snapcraft.io/t/snapcraft-top-level-metadata/8334#heading--assumes
@@ -125,13 +126,13 @@ parts:
       - -bin/README.*
 
   # Programs to modify the behavior of each step of the snapcraft lifecycles
-  scriptlets:
-    source: snap/local/scriptlets
-    plugin: dump
-    organize:
-      '*': scriptlets/
-    prime:
-      - -*
+  # scriptlets:
+  #   source: snap/local/scriptlets
+  #   plugin: dump
+  #   organize:
+  #     '*': scriptlets/
+  #   prime:
+  #     - -*
 
   # Stage snap for fixing the glibc locales(and gnu gettext I18N support)
   # This part is only required for non GUI apps that don't uses the desktop-launch launchers
@@ -175,37 +176,79 @@ parts:
   #   stage-snaps:
   #     - zenity-integration
 
+  # Check out the tagged release revision if it isn't promoted to the stable channel
+  # https://forum.snapcraft.io/t/selective-checkout-check-out-the-tagged-release-revision-if-it-isnt-promoted-to-the-stable-channel/10617
+  # selective-checkout:
+  #   source: https://github.com/Lin-Buo-Ren/selective-checkout.git
+  #   source-tag: v2.0.0
+  #   plugin: dump
+  #   build-packages:
+  #     # Scriptlet dependencies
+  #     - curl
+  #     - jq
+  #     - sed
+
+  #     - git
+  #   stage:
+  #     - scriptlets/selective-checkout
+  #   prime:
+  #     - -*
+
+  homeishome-launch:
+    plugin: nil
+    stage-snaps:
+      - homeishome-launch
+
   main:
     after:
       # for patch-desktop-entries.*
       - patching
 
       # for override-pull script
-      - scriptlets
+      #- selective-checkout
 
     source: https://github.com/Konloch/bytecode-viewer.git
     source-depth: 200
+    build-packages:
+      - curl
+      # Use install time compiled truststore from Ubuntu
+      - ca-certificates-java
     override-pull: |
       set -o nounset
 
-      snapcraftctl pull
+      # We unable to build from source at the moment
+      # https://github.com/Konloch/bytecode-viewer/issues/197
+      #snapcraftctl pull
+      #"${SNAPCRAFT_STAGE}"/scriptlets/selective-checkout \
+        #--append-packaging-version
 
-      "${SNAPCRAFT_STAGE}"/scriptlets/selective-checkout \
-        --append-packaging-version
+      curl \
+        --location \
+        --remote-name \
+        --remote-header-name \
+        https://github.com/Konloch/bytecode-viewer/releases/download/v${SNAPCRAFT_PROJECT_VERSION}/Bytecode-Viewer-${SNAPCRAFT_PROJECT_VERSION}.jar
 
     plugin: dump
-    organize:
-      bytecode-viewer: bin/
-    stage:
-      - bin/*
+    stage-packages:
+      - default-jre
 
     override-prime: |
-      set \
-        -o nounset
+      set -o nounset
 
       snapcraftctl prime
 
-      "${SNAPCRAFT_STAGE}"/patching/patch-desktop-entries.bash
+      # Fix missing interpreter executable symbolic link
+      ln \
+        --symbolic \
+        --force \
+        ../usr/lib/jvm/default-java/bin/java \
+        bin/java
+
+      # Fix missing truststore
+      cp \
+        --force \
+        /etc/ssl/certs/java/cacerts \
+        etc/ssl/certs/java/cacerts
 
 # Apps that are exposed by the snap package
 # If the _app_name_ is identical with the _snap_name_ it can be directly run
@@ -219,16 +262,12 @@ apps:
 
     # An *relative path* to an executable file root from the `prime` directory to be executed, and its command-line arguments
     # NOTE: The right angle bracket at the beginning of the value of the `command` keyword starts a YAML folded style block scalar, refer the following spec document for more info: http://yaml.org/spec/1.2/spec.html#id2796251
-    command: bin/bytecode-viewer
+    command: bytecode-viewer-launch
 
     # The commands that are run, in order, before running the one specified by the `command` key
     command-chain:
       - bin/desktop-launch
-      - bin/bytecode-viewer-launch
-
-    # If the providing part of the app. has a desktop entry, specify its path relative to the `prime` directory.
-    # If the packaging target doesn't provide a desktop entry, ignore the `desktop` key and implement a desktop entry in `/snap/gui`
-    desktop: meta/gui/bytecode-viewer.desktop
+      - bin/homeishome-launch
 
 # Refer the following documentation for asserting interface plugs and slots in a security confined snap:
 # Interface management - doc - snapcraft.io
@@ -268,8 +307,8 @@ plugs:
     default-provider: gtk-common-themes
 
   # Regular files access
-  #home:
-  #removable-media: # Non-A/C
+  home:
+  removable-media: # Non-A/C
 
   # Application-specific files access
   # The auto-connection requires store grant
@@ -285,6 +324,7 @@ plugs:
       #- /etc/bytecode-viewer
 
   # Network access
-  #network:
+  network:
+  network-bind:
 
 #slots:
