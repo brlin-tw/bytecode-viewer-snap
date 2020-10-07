@@ -11,5 +11,15 @@ set \
 
 #export IMPORTANT_ENVIRONMENT_VARIABLE=value
 
+# Assume only one file
+jar_file="$(
+    ls -1 "${SNAP}"/Bytecode-Viewer-*.jar \
+        | head --lines=1
+)"
+
 # Finally run the next part of the command chain
-exec "${@}"
+exec \
+    java \
+        -jar \
+        "${jar_file}" \
+        "${@}"
