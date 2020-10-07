@@ -18,7 +18,7 @@
 # before contributing the recipe to the upstream
 
 name: bytecode-viewer
-title: Bytecode Viewer
+title: Bytecode Viewer (UNOFFICIAL)
 summary: An advanced yet user friendly Java Reverse Engineering suite
 description: |
   Six different Java decompilers, two Bytecode editors, a Java compiler,
