@@ -7,5 +7,5 @@ Type=Application
 Name=Bytecode Viewer
 Comment=An advanced yet user friendly Java Reverse Engineering suite 
 Exec=bytecode-viewer
-Icon=${SNAP}/meta/gui/bytecode-viewer.png
+Icon=${SNAP}/meta/gui/bcv-icon.200px.png
 Categories=Development;Utility
