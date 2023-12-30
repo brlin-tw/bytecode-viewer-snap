@@ -46,11 +46,11 @@ Published for <img src="http://anything.codes/slack-emoji-for-techies/emoji/tux.
 * [A list of functionallities that are verified working]
 
 ## What is NOT Working...yet 
-Check out the [issue tracker](https://github.com/Lin-Buo-Ren/bytecode-viewer-snap/issues) for known issues.
+Check out the [issue tracker](https://github.com/brlin-tw/bytecode-viewer-snap/issues) for known issues.
 -->
 
 ## Support
 * Report issues regarding using this snap to the issue tracker:  
-  <https://github.com/Lin-Buo-Ren/bytecode-viewer-snap/issues>
+  <https://github.com/brlin-tw/bytecode-viewer-snap/issues>
 * You may also post on the Snapcraft Forum, under the `snap` topic category:  
   <https://forum.snapcraft.io/c/snap>
