@@ -3,12 +3,12 @@
 	Use the Staticaly service for easy access to in-repo pictures:
 	https://www.staticaly.com/
 -->
-![(Placeholder) Icon of Bytecode Viewer](https://cdn.staticaly.com/gh/Lin-Buo-Ren/snapcrafters-template-plus/bea3bc56/snap/gui/bytecode-viewer.png "(Placeholder) Icon of Bytecode Viewer")
+![(Placeholder) Icon of Bytecode Viewer](https://cdn.staticaly.com/gh/brlin-tw/snapcrafters-template-plus/bea3bc56/snap/gui/bytecode-viewer.png "(Placeholder) Icon of Bytecode Viewer")
 
 **This is the unofficial snap for [Bytecode Viewer](https://bytecodeviewer.com/)**, *"An advanced yet user friendly Java Reverse Engineering suite"*. It works on Ubuntu, Fedora, Debian, and other major Linux distributions.
 
 <!-- Uncomment and modify this when you are provided a build status badge
-[![Build Status Badge of the `bytecode-viewer` Snap](https://build.snapcraft.io/badge/Lin-Buo-Ren/bytecode-viewer-snap.svg "Build Status of the `bytecode-viewer` snap")](https://build.snapcraft.io/user/Lin-Buo-Ren/bytecode-viewer-snap)
+[![Build Status Badge of the `bytecode-viewer` Snap](https://build.snapcraft.io/badge/brlin-tw/bytecode-viewer-snap.svg "Build Status of the `bytecode-viewer` snap")](https://build.snapcraft.io/user/brlin-tw/bytecode-viewer-snap)
 -->
 
 ![Screenshot of the Snapped Application](local/screenshots/compare-view.png "Screenshot of the Snapped Application")
