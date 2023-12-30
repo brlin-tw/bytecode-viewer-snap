@@ -250,6 +250,10 @@ parts:
         /etc/ssl/certs/java/cacerts \
         etc/ssl/certs/java/cacerts
 
+      # Fix review-tools failure due to dangling symlink
+      rm \
+        usr/lib/jvm/java-11-openjdk-*/lib/security/blacklisted.certs
+
 # Apps that are exposed by the snap package
 # If the _app_name_ is identical with the _snap_name_ it can be directly run
 # with `_snap_name_` or `snap run _snap_name_` commands, otherwise it can only be run
