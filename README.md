@@ -1,9 +1,11 @@
-# Unofficial Snap Packaging for Bytecode Viewer 
+# Unofficial Snap Packaging for Bytecode Viewer
+
 This is the unofficial snap packaging for [Bytecode Viewer](https://bytecodeviewer.com/), [Snaps are universal Linux packages](https://snapcraft.io).
 
 Refer [snap/README.md](snap/README.md) for user-oriented information.
 
 ## Remaining Tasks
+
 Snapcrafters ([join us](https://forum.snapcraft.io/t/join-snapcrafters/1325)) are working to land snap install documentation and the [snapcraft.yaml](https://github.com/brlin-tw/snapcrafters-template-plus/blob/master/snap/snapcraft.yaml) upstream so [Project] can authoritatively publish future releases.
 
 - [x] Create _snap_name_-snap (or any valid name you prefer) repository via the [Use this template](https://github.com/brlin-tw/snapcrafters-template-plus/generate) button above
@@ -45,6 +47,7 @@ Finally:
 If you have any questions, [post in the Snapcraft forum](https://forum.snapcraft.io).
 
 ## Contacts
+
 | Packager | Upstream |
 | :-: | :-: |
 | [![Packager's avatar](http://gravatar.com/avatar/66a5b84972e73e895d5d68d48b1e1e21/?s=128)<br>林博仁<br>Buo-ren, Lin](mailto:Buo.Ren.Lin@gmail.com) | [Upstream's project issue tracker](https://github.com/Konloch/bytecode-viewer/issues) |
