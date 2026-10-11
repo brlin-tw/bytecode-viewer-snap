@@ -20,6 +20,7 @@ jar_file="$(
 # Finally run the next part of the command chain
 exec \
     java \
+        -Djava.security.manager=allow \
         -jar \
         "${jar_file}" \
         "${@}"

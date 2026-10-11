@@ -86,7 +86,7 @@ assumes:
 
 # Base runtime
 # The common runtime for the snap to run on, or `bare` for static linked applications
-base: core18
+base: core24
 # https://docs.snapcraft.io/snapcraft-top-level-metadata/8334#heading--base
 
 # Security confinement
@@ -125,75 +125,6 @@ parts:
     stage:
       - -bin/README.*
 
-  # Programs to modify the behavior of each step of the snapcraft lifecycles
-  # scriptlets:
-  #   source: snap/local/scriptlets
-  #   plugin: dump
-  #   organize:
-  #     '*': scriptlets/
-  #   prime:
-  #     - -*
-
-  # Stage snap for fixing the glibc locales(and gnu gettext I18N support)
-  # This part is only required for non GUI apps that don't uses the desktop-launch launchers
-  #locales-launch:
-    #plugin: nil
-    #stage-snaps:
-      #- locales-launch
-    #stage-packages:
-      ## For localedef(1)
-      #- libc-bin
-
-      ## For locale data used by localedef(1)
-      #- locales
-
-      # All pre-generated locale data
-      # DISABLED: Lots of duplicate data will be included in snap when this is staged, unless the target machine has no resource to generate them in runtime otherwise not using it
-      #
-      #   Lack of compiled locales breaks gettext based localisation - snapcraft - snapcraft.io
-      #   https://forum.snapcraft.io/t/lack-of-compiled-locales-breaks-gettext-based-localisation/3758
-      #
-      #- locales-all
-
-  # Remote part for support of various desktop technologies
-  # Refer: https://github.com/ubuntu/snapcraft-desktop-helpers/blob/master/snapcraft.yaml
-  desktop-gnome-platform:
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-depth: 1
-    source-subdir: gtk
-
-    plugin: make
-    build-packages:
-      - gcc
-    override-build: |
-      snapcraftctl build
-      mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
-
-  # Integrate custom dialogs in your snap - doc - snapcraft.io
-  # https://forum.snapcraft.io/t/integrate-custom-dialogs-in-your-snap/10825
-  # zenity-integration:
-  #   plugin: nil
-  #   stage-snaps:
-  #     - zenity-integration
-
-  # Check out the tagged release revision if it isn't promoted to the stable channel
-  # https://forum.snapcraft.io/t/selective-checkout-check-out-the-tagged-release-revision-if-it-isnt-promoted-to-the-stable-channel/10617
-  # selective-checkout:
-  #   source: https://github.com/brlin-tw/selective-checkout.git
-  #   source-tag: v2.0.0
-  #   plugin: dump
-  #   build-packages:
-  #     # Scriptlet dependencies
-  #     - curl
-  #     - jq
-  #     - sed
-
-  #     - git
-  #   stage:
-  #     - scriptlets/selective-checkout
-  #   prime:
-  #     - -*
-
   homeishome-launch:
     plugin: nil
     stage-snaps:
@@ -204,29 +135,21 @@ parts:
       # for patch-desktop-entries.*
       - patching
 
-      # for override-pull script
-      #- selective-checkout
-
     source: https://github.com/Konloch/bytecode-viewer.git
     source-depth: 200
     build-packages:
       - curl
       # Use install time compiled truststore from Ubuntu
+      - default-jre-headless
       - ca-certificates-java
     override-pull: |
       set -o nounset
-
-      # We unable to build from source at the moment
-      # https://github.com/Konloch/bytecode-viewer/issues/197
-      #snapcraftctl pull
-      #"${SNAPCRAFT_STAGE}"/scriptlets/selective-checkout \
-        #--append-packaging-version
 
       curl \
         --location \
         --remote-name \
         --remote-header-name \
-        https://github.com/Konloch/bytecode-viewer/releases/download/v${SNAPCRAFT_PROJECT_VERSION}/Bytecode-Viewer-${SNAPCRAFT_PROJECT_VERSION}.jar
+        https://github.com/Konloch/bytecode-viewer/releases/download/v${CRAFT_PROJECT_VERSION}/Bytecode-Viewer-${CRAFT_PROJECT_VERSION}.jar
 
     plugin: dump
     stage-packages:
@@ -235,7 +158,7 @@ parts:
     override-prime: |
       set -o nounset
 
-      snapcraftctl prime
+      craftctl default
 
       # Fix missing interpreter executable symbolic link
       ln \
@@ -250,85 +173,19 @@ parts:
         /etc/ssl/certs/java/cacerts \
         etc/ssl/certs/java/cacerts
 
-      # Fix review-tools failure due to dangling symlink
-      rm \
-        usr/lib/jvm/java-11-openjdk-*/lib/security/blacklisted.certs
-
 # Apps that are exposed by the snap package
 # If the _app_name_ is identical with the _snap_name_ it can be directly run
 # with `_snap_name_` or `snap run _snap_name_` commands, otherwise it can only be run
 # via `_snap_name_._app_name_` or `snap run _snap_name_._app_name_`
 apps:
   bytecode-viewer:
-    # The adapter to set up runtime environment at the launch of the snap
-    # NOTE: The `command-chain` property is only supported by the `full` adapter
-    adapter: full
-
-    # An *relative path* to an executable file root from the `prime` directory to be executed, and its command-line arguments
-    # NOTE: The right angle bracket at the beginning of the value of the `command` keyword starts a YAML folded style block scalar, refer the following spec document for more info: http://yaml.org/spec/1.2/spec.html#id2796251
-    command: bytecode-viewer-launch
-
-    # The commands that are run, in order, before running the one specified by the `command` key
+    command: bin/bytecode-viewer-launch
     command-chain:
-      - bin/desktop-launch
       - bin/homeishome-launch
-
-# Refer the following documentation for asserting interface plugs and slots in a security confined snap:
-# Interface management - doc - snapcraft.io
-# https://docs.snapcraft.io/interface-management/6154
-# Supported interfaces - doc - snapcraft.io
-# https://docs.snapcraft.io/supported-interfaces/7744
-# Non-A/C: Non-autoconnect interface
-plugs:
-  # Common desktop interfaces
-  # https://forum.snapcraft.io/t/the-desktop-interfaces/2042
-  desktop:
-  desktop-legacy:
-  unity7:
-  wayland:
-
-  # GNOME and Gtk runtime via content sharing
-  # https://forum.snapcraft.io/t/desktop-app-support-gtk/6834
-  gnome-3-28-1804:
-    interface: content
-    target: $SNAP/gnome-platform
-    default-provider: gnome-3-28-1804
-
-  # Gtk Common Themes support
-  # https://forum.snapcraft.io/t/how-to-use-the-system-gtk-theme-via-the-gtk-common-themes-snap/6235
-  gsettings:
-  gtk-3-themes:
-    interface: content
-    target: $SNAP/data-dir/themes
-    default-provider: gtk-common-themes
-  icon-themes:
-    interface: content
-    target: $SNAP/data-dir/icons
-    default-provider: gtk-common-themes
-  sound-themes:
-    interface: content
-    target: $SNAP/data-dir/sounds
-    default-provider: gtk-common-themes
-
-  # Regular files access
-  home:
-  removable-media: # Non-A/C
-
-  # Application-specific files access
-  # The auto-connection requires store grant
-  # https://forum.snapcraft.io/t/the-personal-files-interface/9357
-  # https://forum.snapcraft.io/t/the-system-files-interface/9358
-  #user-wide-configs:
-    #interface: personal-files
-    #read:
-      #- $HOME/.config/bytecode-viewer
-  #system-wide-configs:
-    #interface: system-files
-    #read:
-      #- /etc/bytecode-viewer
-
-  # Network access
-  network:
-  network-bind:
-
-#slots:
+    extensions:
+      - gnome
+    plugs:
+      - home
+      - removable-media
+      - network
+      - network-bind
