@@ -55,6 +55,13 @@ description: |
   not responsible for the snap packaging, use the "Contact _publisher_name_"
   link below instead.
 
+issues: https://github.com/brlin-tw/bytecode-viewer-snap/issues
+contact: https://github.com/brlin-tw/bytecode-viewer-snap/issues
+website: https://github.com/brlin-tw/bytecode-viewer-snap
+source-code:
+  - https://github.com/brlin-tw/bytecode-viewer-snap
+  - https://github.com/Konloch/bytecode-viewer
+
 # The path of icon to represent the snap, relative to the source tree directory
 # Only PNG or SVG image is supported, dimension must be greater than 256x256px
 icon: snap/gui/bcv-icon.200px.png
