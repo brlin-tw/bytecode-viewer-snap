@@ -143,22 +143,18 @@ parts:
       - patching
 
     source: https://github.com/Konloch/bytecode-viewer.git
-    source-depth: 200
+    source-tag: v${CRAFT_PROJECT_VERSION}
+    plugin: maven
+    maven-parameters:
+      - -B
+      - package
+      - -DskipTests
     build-packages:
-      - curl
-      # Use install time compiled truststore from Ubuntu
-      - default-jre-headless
+      - maven
+      - default-jdk-headless
       - ca-certificates-java
-    override-pull: |
-      set -o nounset
-
-      curl \
-        --location \
-        --remote-name \
-        --remote-header-name \
-        https://github.com/Konloch/bytecode-viewer/releases/download/v${CRAFT_PROJECT_VERSION}/Bytecode-Viewer-${CRAFT_PROJECT_VERSION}.jar
-
-    plugin: dump
+    organize:
+      target/Bytecode-Viewer-*.jar: .
     stage-packages:
       - default-jre
 
