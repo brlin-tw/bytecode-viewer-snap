@@ -1,6 +1,6 @@
 %YAML 1.1
 ---
-# Snapcraft Recipe for Bytecode Viewer
+# Snapcraft project file for the unofficial Bytecode Viewer snap
 # ------------------------------
 # This file is in the YAML data serialization format:
 # http://yaml.org
