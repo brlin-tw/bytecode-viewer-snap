@@ -88,8 +88,9 @@ version: 2.13.2
 
 # Snapd feature set and version the snap requires in order to work
 # https://forum.snapcraft.io/t/snapcraft-top-level-metadata/8334#heading--assumes
-assumes:
-  - command-chain
+assumes: []
+  # DISABLED: Workaround canonical/snapcraft#4931
+  #- command-chain
 
 # Base runtime
 # The common runtime for the snap to run on, or `bare` for static linked applications
