@@ -109,6 +109,14 @@ confinement: strict
 # snaps can be promoted to `candidate` and `stable` channels
 grade: stable
 
+# gnome-46-2404 only supports the following architectures as of 2026/10/12
+# https://snapcraft.io/gnome-46-2404
+platforms:
+  amd64:
+  arm64:
+  armhf:
+  riscv64:
+
 # Run `snapcraft help sources` for supported keywords on pulling a part's source ingredients
 # Run `snapcraft plugins` for supported build helper plugins
 # Run `snapcraft help plugins` for supported keywords on building a part
