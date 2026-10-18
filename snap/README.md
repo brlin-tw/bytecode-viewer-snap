@@ -8,7 +8,7 @@
 
 **This is the unofficial snap for [Bytecode Viewer](https://bytecodeviewer.com/)**, *"An advanced yet user friendly Java Reverse Engineering suite"*. It works on Ubuntu, Fedora, Debian, and other major Linux distributions.
 
-[![Build Status Badge of the `bytecode-viewer` Snap](https://snapcraft.io/bytecode-viewer/badge.svg "Build Status of the `bytecode-viewer` snap")](https://snapcraft.io/bytecode-viewer)
+[![Build Status Badge of the `bytecode-viewer` Snap](https://snapcraft.io/bytecode-viewer/badge.svg "Build Status of the `bytecode-viewer` snap")](https://snapcraft.io/bytecode-viewer) [![Store trending badge](https://snapcraft.io/bytecode-viewer/trending.svg?name=0)](https://snapcraft.io/bytecode-viewer)
 
 ![Screenshot of the Snapped Application](local/screenshots/compare-view.png "Screenshot of the Snapped Application")
 
