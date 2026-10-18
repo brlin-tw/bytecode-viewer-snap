@@ -12,7 +12,7 @@
 
 ![Screenshot of the Snapped Application](local/screenshots/compare-view.png "Screenshot of the Snapped Application")
 
-Published for <img src="http://anything.codes/slack-emoji-for-techies/emoji/tux.png" align="top" width="24" /> with 💝 by Snapcrafters
+Published for 🐧 with 💝 by Snapcrafters
 
 ## Installation
 
