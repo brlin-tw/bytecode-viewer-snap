@@ -55,6 +55,13 @@ description: |
   not responsible for the snap packaging, use the "Contact _publisher_name_"
   link below instead.
 
+  **Limitations**
+
+  The PyPy 2.7 runtime (required by the Krakatau decompiler, disassembler,
+  and assembler suite) is only available on amd64 and arm64 architectures.
+  On other architectures (e.g. armhf, riscv64), Krakatau features are
+  unavailable unless a compatible Python/PyPy 2.7 runtime is provided.
+
 issues: https://github.com/brlin-tw/bytecode-viewer-snap/issues
 contact: https://github.com/brlin-tw/bytecode-viewer-snap/issues
 website: https://github.com/brlin-tw/bytecode-viewer-snap
@@ -145,6 +152,118 @@ parts:
     plugin: nil
     stage-snaps:
       - homeishome-launch
+
+  pypy-2-7:
+    plugin: nil
+    build-packages:
+      - bzip2
+      - curl
+      - tar
+    override-pull: |
+      set_opts=(
+        errexit
+        nounset
+      )
+      for opt in "${set_opts[@]}"; do
+        if ! set -o "${opt}"; then
+          printf \
+            'Error: Failed to set defensive interpreter behavior "%s".\n' \
+            "${opt}" \
+            1>&2
+          exit 1
+        fi
+      done
+
+      case "${CRAFT_ARCH_BUILD_FOR}" in
+        amd64)
+          archive_url="https://downloads.python.org/pypy/pypy2.7-v7.3.5-linux64.tar.bz2"
+          expected_checksum="4858b347801fba3249ad90af015b3aaec9d57f54d038a58d806a1bd3217d5150"
+          ;;
+        arm64)
+          archive_url="https://downloads.python.org/pypy/pypy2.7-v7.3.5-aarch64.tar.bz2"
+          expected_checksum="8dc2c753f8a94eca1a304d7736c99b439c09274f492eaa3446770c6c32ed010e"
+          ;;
+        *)
+          printf \
+            'Info: PyPy 2.7 runtime is not available for "%s", skipping.\n' \
+            "${CRAFT_ARCH_BUILD_FOR}"
+          exit 0
+          ;;
+      esac
+
+      archive_file="$(basename "${archive_url}")"
+      if ! test -f "${archive_file}"; then
+        curl \
+          --fail \
+          --location \
+          --output "${archive_file}" \
+          "${archive_url}"
+      fi
+
+      printf \
+        '%s  %s\n' \
+        "${expected_checksum}" \
+        "${archive_file}" \
+        | sha256sum --check --strict -
+
+      mkdir -p "${CRAFT_PART_SRC}/opt/pypy2.7"
+      tar \
+        --extract \
+        --bzip2 \
+        --file="${archive_file}" \
+        --strip-components=1 \
+        --directory="${CRAFT_PART_SRC}/opt/pypy2.7"
+
+    override-build: |
+      set_opts=(
+        errexit
+        nounset
+      )
+      for opt in "${set_opts[@]}"; do
+        if ! set -o "${opt}"; then
+          printf \
+            'Error: Failed to set defensive interpreter behavior "%s".\n' \
+            "${opt}" \
+            1>&2
+          exit 1
+        fi
+      done
+
+      if test -d "${CRAFT_PART_SRC}/opt/pypy2.7"; then
+        mkdir -p "${CRAFT_PART_INSTALL}/opt"
+        cp \
+          --archive \
+          "${CRAFT_PART_SRC}/opt/pypy2.7" \
+          "${CRAFT_PART_INSTALL}/opt/pypy2.7"
+      fi
+
+    override-prime: |
+      craftctl default
+
+      if test -f "${CRAFT_PRIME}/opt/pypy2.7/bin/pypy"; then
+        # Workaround upstream BCV looking for 'python' executable in PATH
+        mkdir -p "${CRAFT_PRIME}/bin"
+        ln \
+          --symbolic \
+          --force \
+          ../opt/pypy2.7/bin/pypy \
+          "${CRAFT_PRIME}/bin/python"
+        ln \
+          --symbolic \
+          --force \
+          ../opt/pypy2.7/bin/pypy \
+          "${CRAFT_PRIME}/bin/pypy"
+        ln \
+          --symbolic \
+          --force \
+          ../opt/pypy2.7/bin/pypy \
+          "${CRAFT_PRIME}/bin/pypy2"
+        ln \
+          --symbolic \
+          --force \
+          ../opt/pypy2.7/bin/pypy \
+          "${CRAFT_PRIME}/bin/python2"
+      fi
 
   main:
     after:
