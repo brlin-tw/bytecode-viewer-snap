@@ -58,9 +58,10 @@ description: |
   **Limitations**
 
   The PyPy 2.7 runtime (required by the Krakatau decompiler, disassembler,
-  and assembler suite) is only available on amd64 and arm64 architectures.
-  On other architectures (e.g. armhf, riscv64), Krakatau features are
-  unavailable unless a compatible Python/PyPy 2.7 runtime is provided.
+  and assembler suite) and PyPy 3.x runtime (used by Enjarify) are only
+  available on amd64 and arm64 architectures. On other architectures
+  (e.g. armhf, riscv64), Krakatau and Enjarify features are unavailable
+  unless compatible Python/PyPy runtimes are provided.
 
 issues: https://github.com/brlin-tw/bytecode-viewer-snap/issues
 contact: https://github.com/brlin-tw/bytecode-viewer-snap/issues
@@ -263,6 +264,108 @@ parts:
           --force \
           ../opt/pypy2.7/bin/pypy \
           "${CRAFT_PRIME}/bin/python2"
+      fi
+
+  pypy-3:
+    plugin: nil
+    build-packages:
+      - curl
+      - gzip
+      - tar
+    override-pull: |
+      set_opts=(
+        errexit
+        nounset
+      )
+      for opt in "${set_opts[@]}"; do
+        if ! set -o "${opt}"; then
+          printf \
+            'Error: Failed to set defensive interpreter behavior "%s".\n' \
+            "${opt}" \
+            1>&2
+          exit 1
+        fi
+      done
+
+      case "${CRAFT_ARCH_BUILD_FOR}" in
+        amd64)
+          archive_url="https://downloads.python.org/pypy/pypy3.10-v7.3.19-linux64.tar.gz"
+          expected_checksum="abfbb05bb3691e694cf9307635d14d0866f0a85429df8958c110e3de168706b4"
+          ;;
+        arm64)
+          archive_url="https://downloads.python.org/pypy/pypy3.10-v7.3.19-aarch64.tar.gz"
+          expected_checksum="598b73e166c4ce215f327cc1579c54ead8f2b048de429d5b77c5d0a2edb2f566"
+          ;;
+        *)
+          printf \
+            'Info: PyPy 3.x runtime is not available for "%s", skipping.\n' \
+            "${CRAFT_ARCH_BUILD_FOR}"
+          exit 0
+          ;;
+      esac
+
+      archive_file="$(basename "${archive_url}")"
+      if ! test -f "${archive_file}"; then
+        curl \
+          --fail \
+          --location \
+          --output "${archive_file}" \
+          "${archive_url}"
+      fi
+
+      printf \
+        '%s  %s\n' \
+        "${expected_checksum}" \
+        "${archive_file}" \
+        | sha256sum --check --strict -
+
+      mkdir -p "${CRAFT_PART_SRC}/opt/pypy3"
+      tar \
+        --extract \
+        --gzip \
+        --file="${archive_file}" \
+        --strip-components=1 \
+        --directory="${CRAFT_PART_SRC}/opt/pypy3"
+
+    override-build: |
+      set_opts=(
+        errexit
+        nounset
+      )
+      for opt in "${set_opts[@]}"; do
+        if ! set -o "${opt}"; then
+          printf \
+            'Error: Failed to set defensive interpreter behavior "%s".\n' \
+            "${opt}" \
+            1>&2
+          exit 1
+        fi
+      done
+
+      if test -d "${CRAFT_PART_SRC}/opt/pypy3"; then
+        mkdir -p "${CRAFT_PART_INSTALL}/opt"
+        cp \
+          --archive \
+          "${CRAFT_PART_SRC}/opt/pypy3" \
+          "${CRAFT_PART_INSTALL}/opt/pypy3"
+      fi
+
+    override-prime: |
+      craftctl default
+
+      if test -f "${CRAFT_PRIME}/opt/pypy3/bin/pypy3"; then
+        # Workaround upstream BCV looking for 'python3' executable in PATH
+        mkdir -p "${CRAFT_PRIME}/bin"
+        ln \
+          --symbolic \
+          --force \
+          ../opt/pypy3/bin/pypy3 \
+          "${CRAFT_PRIME}/bin/python3"
+        ln \
+          --symbolic \
+          --force \
+          ../opt/pypy3/bin/pypy3 \
+          "${CRAFT_PRIME}/bin/pypy3"
       fi
 
   main:
