@@ -17,6 +17,13 @@ jar_file="$(
         | head --lines=1
 )"
 
+# This addresses the following error:
+# 'import site' failed
+# debug: OperationError:
+# debug:  operror-type: SyntaxError
+# debug:  operror-value: ('invalid syntax', ('/snap/bytecode-viewer/x8/gnome-platform/usr/lib/python3.12/codecs.py', 96, 10, '        *, _is_text_encoding=None):\n', 0))
+unset PYTHONPATH
+
 # Finally run the next part of the command chain
 exec \
     java \
