@@ -1,0 +1,34 @@
+# Git submodule definition file
+#
+# Reference:
+#
+# * Git - gitmodules Documentation
+#   https://git-scm.com/docs/gitmodules
+#
+# Copyright 2026 林博仁(Buo-ren Lin) <buo.ren.lin@gmail.com>
+# SPDX-License-Identifier: CC-BY-SA-4.0
+[submodule "The searching-ubuntu-packages agent skill"]
+	path = .agents/skills/searching-ubuntu-packages
+	url = https://gitlab.com/brlin/searching-ubuntu-packages.git
+	ignore = dirty
+	shallow = true
+[submodule "The developing-bash-scripts agent skill"]
+	path = .agents/skills/developing-bash-scripts
+	url = https://gitlab.com/brlin/developing-bash-scripts.git
+	ignore = dirty
+	shallow = true
+[submodule "The determining-git-commit-messages agent skill"]
+	path = .agents/skills/determining-git-commit-messages
+	url = https://gitlab.com/brlin/determining-git-commit-messages.git
+	ignore = dirty
+	shallow = true
+[submodule "The ensuring-human-in-the-loop agent skill"]
+	path = .agents/skills/ensuring-human-in-the-loop
+	url = https://gitlab.com/brlin/ensuring-human-in-the-loop.git
+	ignore = dirty
+	shallow = true
+[submodule "The implementing-new-features agent skill"]
+	path = .agents/skills/implementing-new-features
+	url = https://gitlab.com/brlin/implementing-new-features.git
+	ignore = dirty
+	shallow = true
