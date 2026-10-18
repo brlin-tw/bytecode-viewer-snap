@@ -387,7 +387,7 @@ parts:
     organize:
       target/Bytecode-Viewer-*.jar: .
     stage-packages:
-      - default-jre
+      - default-jdk-headless
 
     override-prime: |
       set -o nounset
