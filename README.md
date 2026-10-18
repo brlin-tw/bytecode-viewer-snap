@@ -1,4 +1,4 @@
-# Unofficial Snap Packaging for Bytecode Viewer
+# Unofficial snap packaging for Bytecode Viewer
 
 This is the unofficial snap packaging for [Bytecode Viewer](https://bytecodeviewer.com/), [Snaps are universal Linux packages](https://snapcraft.io).
 
