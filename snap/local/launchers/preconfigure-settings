@@ -19,24 +19,40 @@ def main():
         with open(settings_path, "r", encoding="utf-8", errors="replace") as f:
             lines = [line.rstrip("\r\n") for line in f]
     else:
-        # Default settings.bcv template for Bytecode Viewer 2.13.2
+        # Default settings.bcv template for Bytecode Viewer 2.13.2 (exactly 144 lines: index 0 to 143)
         lines = [
+            # 0: header
             "BCV: 2.13.2",
-            "true", "false", "true", "true", "true", "true", "true", "false", "true",
-            "true", "true", "true", "true", "true", "true", "true", "true", "false", "true",
-            "false", "false", "false", "true", "true", "true", "true", "true", "false", "false",
-            "true", "false", "true", "false", "false", "true", "true", "false", "false", "false",
+            # 1 - 10
+            "true", "false", "true", "true", "true", "true", "true", "false", "true", "true",
+            # 11 - 20
+            "true", "true", "true", "true", "true", "true", "true", "false", "true", "false",
+            # 21 - 30
+            "false", "false", "true", "true", "true", "true", "true", "false", "false", "true",
+            # 31 - 40
+            "false", "true", "false", "false", "true", "true", "false", "false", "false", "false",
+            # 41 - 50
             "false", "false", "false", "false", "false", "false", "false", "false", "false", "false",
+            # 51 - 60
             "false", "false", "false", "false", "false", "false", "false", "false", "false", "false",
+            # 61 - 70
             "false", "false", "false", "false", "false", "false", "false", "false", "false", "false",
+            # 71 - 80
             "false", "false", "false", "false", "false", "false", "false", "false", "deprecated", "true",
+            # 81 - 90: [81]: viewPane1 (4), [82]: viewPane2 (7), [83]: viewPane3 (0), [84]: refreshOnChange (true), [85]: isMaximized (false), [86]: dep, [87]: dep, [88]: lastOpenDirectory (.), [89]: python2 (""), [90]: rt ("")
             "4", "7", "0", "true", "false", "deprecated", "deprecated", ".", "", "",
+            # 91 - 100: [91..100]: deprecated
             "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated",
-            "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "true", "", "true", "deprecated", "deprecated",
+            # 101 - 110: [101..105]: deprecated, [106]: decodeAPKResources (true), [107]: library (""), [108]: pingback (false), [109..110]: deprecated
+            "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "true", "", "false", "deprecated", "deprecated",
+            # 111 - 120: [111]: deprecated, [112]: fontSize (12), [113]: deleteForeignLibraries (true), [114]: apkConversion (0), [115]: python3 (""), [116]: javac (""), [117]: java (""), [118]: compileOnSave (false), [119]: autoCompileOnRefresh (false), [120]: warnForEditing (false)
             "deprecated", "12", "true", "0", "", "", "", "false", "false", "false",
-            "false", "true", "false", "false", "deprecated", "DARK", "DARK", "false", "ENGLISH", "false",
-            "false", "false", "", "deprecated", "deprecated", ".", ".", "false", "false", "1",
-            "false", "false"
+            # 121 - 130: [121]: showFileInTabTitle (false), [122]: forcePureAsciiAsText (false), [123]: synchronizedViewing (true), [124]: showClassMethods (false), [125]: ren (false), [126]: deprecated, [127]: lafTheme (DARK), [128]: rstaTheme (DARK), [129]: simplifyNameInTabTitle (false), [130]: language (ENGLISH)
+            "false", "false", "true", "false", "false", "deprecated", "DARK", "DARK", "false", "ENGLISH",
+            # 131 - 140: [131]: viewPane1 editable (false), [132]: viewPane2 editable (false), [133]: viewPane3 editable (false), [134]: javaTools (""), [135..136]: deprecated, [137]: lastSaveDirectory (.), [138]: lastPluginDirectory (.), [139]: python2Extra (false), [140]: python3Extra (false)
+            "false", "false", "false", "", "deprecated", "deprecated", ".", ".", "false", "false",
+            # 141 - 143: [141]: minSdkVersion (1), [142]: printLineNumbers (false), [143]: disableReloadConfirmation (false)
+            "1", "false", "false"
         ]
 
     # Ensure array is at least 144 lines to match SettingsSerializer schema

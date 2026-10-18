@@ -24,13 +24,17 @@ jar_file="$(
 # debug:  operror-value: ('invalid syntax', ('/snap/bytecode-viewer/x8/gnome-platform/usr/lib/python3.12/codecs.py', 96, 10, '        *, _is_text_encoding=None):\n', 0))
 unset PYTHONPATH
 
+# Avoid hardcoding installation revision
+snap_path_without_revision="${SNAP%/*}"
+snap_stable_path="${snap_path_without_revision}/current"
+
 # Preconfigure Python 2/3, JRT RT library, and javac paths in settings.bcv
 # when missing or stale to prevent manual prompts and ClassLoaderError.
 settings_file="${SNAP_USER_DATA}/.Bytecode-Viewer/settings.bcv"
-python2_bin="${SNAP}/bin/python"
-python3_bin="${SNAP}/bin/python3"
-rt_jar="${SNAP}/usr/lib/jvm/default-java/lib/rt.jar"
-javac_bin="${SNAP}/usr/lib/jvm/default-java/bin/javac"
+python2_bin="${snap_stable_path}/bin/python"
+python3_bin="${snap_stable_path}/bin/python3"
+rt_jar="${snap_stable_path}/usr/lib/jvm/default-java/lib/rt.jar"
+javac_bin="${snap_stable_path}/usr/lib/jvm/default-java/bin/javac"
 
 "${SNAP}/bin/preconfigure-settings" \
     "${settings_file}" \
