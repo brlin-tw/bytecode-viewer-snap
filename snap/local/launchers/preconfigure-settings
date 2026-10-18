@@ -40,16 +40,16 @@ def main():
             "false", "false", "false", "false", "false", "false", "false", "false", "false", "false",
             # 71 - 80
             "false", "false", "false", "false", "false", "false", "false", "false", "deprecated", "true",
-            # 81 - 90: [81]: viewPane1 (4), [82]: viewPane2 (7), [83]: viewPane3 (0), [84]: refreshOnChange (true), [85]: isMaximized (false), [86]: dep, [87]: dep, [88]: lastOpenDirectory (.), [89]: python2 (""), [90]: rt ("")
-            "4", "7", "0", "true", "false", "deprecated", "deprecated", ".", "", "",
+            # 81 - 90: [81]: viewPane1 (FERNFLOWER=3), [82]: viewPane2 (BYTECODE=4), [83]: viewPane3 (NONE=0), [84]: refreshOnChange (true), [85]: isMaximized (false), [86..87]: dep, [88]: lastOpenDirectory (.), [89]: python2 (""), [90]: rt ("")
+            "3", "4", "0", "true", "false", "deprecated", "deprecated", ".", "", "",
             # 91 - 100: [91..100]: deprecated
             "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated",
             # 101 - 110: [101..105]: deprecated, [106]: decodeAPKResources (true), [107]: library (""), [108]: pingback (false), [109..110]: deprecated
             "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "true", "", "false", "deprecated", "deprecated",
-            # 111 - 120: [111]: deprecated, [112]: fontSize (12), [113]: deleteForeignLibraries (true), [114]: apkConversion (0), [115]: python3 (""), [116]: javac (""), [117]: java (""), [118]: compileOnSave (false), [119]: autoCompileOnRefresh (false), [120]: warnForEditing (false)
-            "deprecated", "12", "true", "0", "", "", "", "false", "false", "false",
-            # 121 - 130: [121]: showFileInTabTitle (false), [122]: forcePureAsciiAsText (false), [123]: synchronizedViewing (true), [124]: showClassMethods (false), [125]: ren (false), [126]: deprecated, [127]: lafTheme (DARK), [128]: rstaTheme (DARK), [129]: simplifyNameInTabTitle (false), [130]: language (ENGLISH)
-            "false", "false", "true", "false", "false", "deprecated", "DARK", "DARK", "false", "ENGLISH",
+            # 111 - 120: [111]: deprecated, [112]: fontSize (12), [113]: deleteForeignLibraries (true), [114]: apkConversion (0), [115]: python3 (""), [116]: javac (""), [117]: java (""), [118]: compileOnSave (false), [119]: autoCompileOnRefresh (true), [120]: warnForEditing (false)
+            "deprecated", "12", "true", "0", "", "", "", "false", "true", "false",
+            # 121 - 130: [121]: showFileInTabTitle (false), [122]: forcePureAsciiAsText (true), [123]: synchronizedViewing (true), [124]: showClassMethods (false), [125]: ren (false), [126]: deprecated, [127]: lafTheme (DARK), [128]: rstaTheme (THEME_MATCH), [129]: simplifyNameInTabTitle (false), [130]: language (ENGLISH)
+            "false", "true", "true", "false", "false", "deprecated", "DARK", "THEME_MATCH", "false", "ENGLISH",
             # 131 - 140: [131]: viewPane1 editable (false), [132]: viewPane2 editable (false), [133]: viewPane3 editable (false), [134]: javaTools (""), [135..136]: deprecated, [137]: lastSaveDirectory (.), [138]: lastPluginDirectory (.), [139]: python2Extra (false), [140]: python3Extra (false)
             "false", "false", "false", "", "deprecated", "deprecated", ".", ".", "false", "false",
             # 141 - 143: [141]: minSdkVersion (1), [142]: printLineNumbers (false), [143]: disableReloadConfirmation (false)
