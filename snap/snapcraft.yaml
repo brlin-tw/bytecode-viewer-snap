@@ -402,6 +402,13 @@ parts:
         ../usr/lib/jvm/default-java/bin/java \
         bin/java
 
+      # Fix missing compiler executable symbolic link
+      ln \
+        --symbolic \
+        --force \
+        ../usr/lib/jvm/default-java/bin/javac \
+        bin/javac
+
       # Fix missing truststore
       cp \
         --force \

@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+"""Preconfigure Bytecode Viewer settings.bcv for the snap environment."""
+
+import os
+import sys
+
+def main():
+    if len(sys.argv) < 6:
+        print(f"Usage: {sys.argv[0]} <settings_path> <python2_path> <python3_path> <rt_path> <javac_path>", file=sys.stderr)
+        sys.exit(1)
+
+    settings_path = sys.argv[1]
+    python2_path = sys.argv[2]
+    python3_path = sys.argv[3]
+    rt_path = sys.argv[4]
+    javac_path = sys.argv[5]
+
+    if os.path.exists(settings_path):
+        with open(settings_path, "r", encoding="utf-8", errors="replace") as f:
+            lines = [line.rstrip("\r\n") for line in f]
+    else:
+        # Default settings.bcv template for Bytecode Viewer 2.13.2
+        lines = [
+            "BCV: 2.13.2",
+            "true", "false", "true", "true", "true", "true", "true", "false", "true",
+            "true", "true", "true", "true", "true", "true", "true", "true", "false", "true",
+            "false", "false", "false", "true", "true", "true", "true", "true", "false", "false",
+            "true", "false", "true", "false", "false", "true", "true", "false", "false", "false",
+            "false", "false", "false", "false", "false", "false", "false", "false", "false", "false",
+            "false", "false", "false", "false", "false", "false", "false", "false", "false", "false",
+            "false", "false", "false", "false", "false", "false", "false", "false", "false", "false",
+            "false", "false", "false", "false", "false", "false", "false", "false", "deprecated", "true",
+            "4", "7", "0", "true", "false", "deprecated", "deprecated", ".", "", "",
+            "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "deprecated",
+            "deprecated", "deprecated", "deprecated", "deprecated", "deprecated", "true", "", "true", "deprecated", "deprecated",
+            "deprecated", "12", "true", "0", "", "", "", "false", "false", "false",
+            "false", "true", "false", "false", "deprecated", "DARK", "DARK", "false", "ENGLISH", "false",
+            "false", "false", "", "deprecated", "deprecated", ".", ".", "false", "false", "1",
+            "false", "false"
+        ]
+
+    # Ensure array is at least 144 lines to match SettingsSerializer schema
+    while len(lines) < 144:
+        lines.append("")
+
+    # Line index 89: Configuration.python2
+    if (not lines[89] or not os.path.exists(lines[89])) and os.path.exists(python2_path):
+        lines[89] = python2_path
+
+    # Line index 90: Configuration.rt
+    if (not lines[90] or not os.path.exists(lines[90])) and os.path.exists(rt_path):
+        lines[90] = rt_path
+
+    # Line index 115: Configuration.python3
+    if (not lines[115] or not os.path.exists(lines[115])) and os.path.exists(python3_path):
+        lines[115] = python3_path
+
+    # Line index 116: Configuration.javac
+    if (not lines[116] or not os.path.exists(lines[116])) and os.path.exists(javac_path):
+        lines[116] = javac_path
+
+    os.makedirs(os.path.dirname(settings_path), exist_ok=True)
+    with open(settings_path, "w", encoding="utf-8") as f:
+        for line in lines:
+            f.write(line + "\n")
+
+if __name__ == "__main__":
+    main()
