@@ -1,4 +1,5 @@
 # Unofficial Snap Packaging for Bytecode Viewer
+
 <!--
 	Use the Staticaly service for easy access to in-repo pictures:
 	https://www.staticaly.com/
@@ -16,9 +17,11 @@
 Published for <img src="http://anything.codes/slack-emoji-for-techies/emoji/tux.png" align="top" width="24" /> with 💝 by Snapcrafters
 
 ## Installation
+
 ([Don't have snapd installed?](https://snapcraft.io/docs/core/install))
 
 ### In a Terminal
+
     # Install the snap #
     sudo snap install --channel=beta bytecode-viewer
     #sudo snap install bytecode-viewer
@@ -32,6 +35,7 @@ Published for <img src="http://anything.codes/slack-emoji-for-techies/emoji/tux.
     snap run bytecode-viewer # If you have another existing installation
 
 ### The Graphical Way
+
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/bytecode-viewer)
 
 <!-- Uncomment when you have test results
@@ -43,6 +47,7 @@ Check out the [issue tracker](https://github.com/brlin-tw/bytecode-viewer-snap/i
 -->
 
 ## Support
+
 * Report issues regarding using this snap to the issue tracker:  
   <https://github.com/brlin-tw/bytecode-viewer-snap/issues>
 * You may also post on the Snapcraft Forum, under the `snap` topic category:  
