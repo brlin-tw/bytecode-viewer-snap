@@ -384,6 +384,7 @@ parts:
       - maven
       - default-jdk-headless
       - ca-certificates-java
+      - python3
     organize:
       target/Bytecode-Viewer-*.jar: .
     stage-packages:
@@ -406,6 +407,26 @@ parts:
         --force \
         /etc/ssl/certs/java/cacerts \
         etc/ssl/certs/java/cacerts
+
+      # Workaround Krakatau decompiler requiring rt.jar on Java 9+ runtimes
+      # Java 9+ stores standard classes in lib/modules (jimage) rather than rt.jar.
+      # Krakatau expects rt.jar to resolve standard Java class hierarchies.
+      # Pre-extracting rt.jar into the default-java runtime allows Krakatau
+      # to work out of the box without runtime extraction delay or ClassLoaderError.
+      modules_file="${CRAFT_PRIME}/usr/lib/jvm/default-java/lib/modules"
+      rt_jar_file="${CRAFT_PRIME}/usr/lib/jvm/default-java/lib/rt.jar"
+      if test -f "${modules_file}"; then
+        temp_extract_dir="$(mktemp --directory)"
+        jimage extract \
+          --dir="${temp_extract_dir}" \
+          "${modules_file}"
+
+        "${CRAFT_PROJECT_DIR}/snap/local/scriptlets/create-rt-jar" \
+          "${temp_extract_dir}" \
+          "${rt_jar_file}"
+
+        rm -rf "${temp_extract_dir}"
+      fi
 
 # Apps that are exposed by the snap package
 # If the _app_name_ is identical with the _snap_name_ it can be directly run
