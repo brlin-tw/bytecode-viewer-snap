@@ -5,8 +5,8 @@ import os
 import sys
 
 def main():
-    if len(sys.argv) < 6:
-        print(f"Usage: {sys.argv[0]} <settings_path> <python2_path> <python3_path> <rt_path> <javac_path>", file=sys.stderr)
+    if len(sys.argv) < 7:
+        print(f"Usage: {sys.argv[0]} <settings_path> <python2_path> <python3_path> <rt_path> <javac_path> <java_path>", file=sys.stderr)
         sys.exit(1)
 
     settings_path = sys.argv[1]
@@ -14,6 +14,7 @@ def main():
     python3_path = sys.argv[3]
     rt_path = sys.argv[4]
     javac_path = sys.argv[5]
+    java_path = sys.argv[6]
 
     if os.path.exists(settings_path):
         with open(settings_path, "r", encoding="utf-8", errors="replace") as f:
@@ -74,6 +75,10 @@ def main():
     # Line index 116: Configuration.javac
     if (not lines[116] or not os.path.exists(lines[116])) and os.path.exists(javac_path):
         lines[116] = javac_path
+
+    # Line index 117: Configuration.java
+    if (not lines[117] or not os.path.exists(lines[117])) and os.path.exists(java_path):
+        lines[117] = java_path
 
     os.makedirs(os.path.dirname(settings_path), exist_ok=True)
     with open(settings_path, "w", encoding="utf-8") as f:

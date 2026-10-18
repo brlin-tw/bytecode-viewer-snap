@@ -35,13 +35,15 @@ python2_bin="${snap_stable_path}/bin/python"
 python3_bin="${snap_stable_path}/bin/python3"
 rt_jar="${snap_stable_path}/usr/lib/jvm/default-java/lib/rt.jar"
 javac_bin="${snap_stable_path}/usr/lib/jvm/default-java/bin/javac"
+java_bin="${snap_stable_path}/usr/lib/jvm/default-java/bin/java"
 
 "${SNAP}/bin/preconfigure-settings" \
     "${settings_file}" \
     "${python2_bin}" \
     "${python3_bin}" \
     "${rt_jar}" \
-    "${javac_bin}"
+    "${javac_bin}" \
+    "${java_bin}"
 
 # Finally run the next part of the command chain
 exec \
