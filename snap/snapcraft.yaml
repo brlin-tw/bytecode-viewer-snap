@@ -450,7 +450,6 @@ apps:
       - home
       - removable-media
       - network
-      - network-bind
 
 lint:
   ignore:
