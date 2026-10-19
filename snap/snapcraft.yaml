@@ -384,9 +384,17 @@ parts:
       - maven
       - default-jdk-headless
       - ca-certificates-java
+      - patch
       - python3
-    organize:
-      target/Bytecode-Viewer-*.jar: .
+    override-pull: |
+      set -o nounset
+
+      craftctl default
+
+      patch \
+        --directory="${CRAFT_PART_SRC}" \
+        --strip=1 \
+        < "${CRAFT_PROJECT_DIR}/snap/local/patching/fix-submenu-spinners.patch"
     stage-packages:
       - default-jdk-headless
 

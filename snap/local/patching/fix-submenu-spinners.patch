@@ -1,0 +1,84 @@
+diff --git a/src/main/java/the/bytecode/club/bytecodeviewer/gui/MainViewerGUI.java b/src/main/java/the/bytecode/club/bytecodeviewer/gui/MainViewerGUI.java
+index 8a6b84fa..94e35db9 100644
+--- a/src/main/java/the/bytecode/club/bytecodeviewer/gui/MainViewerGUI.java
++++ b/src/main/java/the/bytecode/club/bytecodeviewer/gui/MainViewerGUI.java
+@@ -413,7 +413,38 @@ public class MainViewerGUI extends JFrame
+         minSdkVersionSpinner.setPreferredSize(new Dimension(60, 24));
+         minSdkVersionSpinner.setMinimumSize(new Dimension(60, 24));
+         minSdkVersionSpinner.setModel(new SpinnerNumberModel(26, 1, null, 1));
+-        minSdkVersionMenu.add(minSdkVersionSpinner);
++        int[] minSdkPresets = new int[]{19, 21, 23, 24, 26, 28, 30, 31, 33, 34};
++        for (int sdk : minSdkPresets)
++        {
++            JMenuItem item = new JMenuItem(String.valueOf(sdk));
++            item.addActionListener(e ->
++            {
++                minSdkVersionSpinner.setValue(sdk);
++                SettingsSerializer.saveSettingsAsync();
++            });
++            minSdkVersionMenu.add(item);
++        }
++        JMenuItem customMinSdkItem = new JMenuItem("Custom...");
++        customMinSdkItem.addActionListener(e ->
++        {
++            String input = ExtendedJOptionPane.showInputDialog(this, "Enter Minimum SDK version:", minSdkVersionSpinner.getValue());
++            if (input != null && !input.trim().isEmpty())
++            {
++                try
++                {
++                    int val = Integer.parseInt(input.trim());
++                    if (val >= 1)
++                    {
++                        minSdkVersionSpinner.setValue(val);
++                        SettingsSerializer.saveSettingsAsync();
++                    }
++                }
++                catch (NumberFormatException ignored)
++                {
++                }
++            }
++        });
++        minSdkVersionMenu.add(customMinSdkItem);
+         settingsMainMenu.add(minSdkVersionMenu);
+ 
+         settingsMainMenu.add(new JSeparator());
+@@ -436,7 +467,38 @@ public class MainViewerGUI extends JFrame
+             BytecodeViewer.updateUI();
+             BytecodeViewer.refreshAllTabs();
+         });
+-        fontSize.add(fontSpinner);
++        int[] fontSizePresets = new int[]{10, 11, 12, 14, 16, 18, 20, 24, 28, 32};
++        for (int size : fontSizePresets)
++        {
++            JMenuItem item = new JMenuItem(String.valueOf(size));
++            item.addActionListener(e ->
++            {
++                fontSpinner.setValue(size);
++                SettingsSerializer.saveSettingsAsync();
++            });
++            fontSize.add(item);
++        }
++        JMenuItem customFontSizeItem = new JMenuItem("Custom...");
++        customFontSizeItem.addActionListener(e ->
++        {
++            String input = ExtendedJOptionPane.showInputDialog(this, "Enter Font Size:", fontSpinner.getValue());
++            if (input != null && !input.trim().isEmpty())
++            {
++                try
++                {
++                    int val = Integer.parseInt(input.trim());
++                    if (val >= 1)
++                    {
++                        fontSpinner.setValue(val);
++                        SettingsSerializer.saveSettingsAsync();
++                    }
++                }
++                catch (NumberFormatException ignored)
++                {
++                }
++            }
++        });
++        fontSize.add(customFontSizeItem);
+ 
+         apkConversionSecondaryMenu.add(decodeAPKResources);
+         apkConversionSecondaryMenu.add(apkConversionDex);

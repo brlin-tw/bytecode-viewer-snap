@@ -12,10 +12,19 @@ set \
 #export IMPORTANT_ENVIRONMENT_VARIABLE=value
 
 # Assume only one file
-jar_file="$(
-    ls -1 "${SNAP}"/Bytecode-Viewer-*.jar \
-        | head --lines=1
-)"
+if test -f "${SNAP}/jar/Bytecode-Viewer-${SNAP_VERSION}.jar"; then
+    jar_file="${SNAP}/jar/Bytecode-Viewer-${SNAP_VERSION}.jar"
+elif compgen -G "${SNAP}/jar/Bytecode-Viewer-*.jar" > /dev/null; then
+    jar_file="$(
+        find "${SNAP}/jar" -maxdepth 1 -name "Bytecode-Viewer-*.jar" -print \
+            | head --lines=1
+    )"
+else
+    jar_file="$(
+        find "${SNAP}" -maxdepth 1 -name "Bytecode-Viewer-*.jar" -print \
+            | head --lines=1
+    )"
+fi
 
 # This addresses the following error:
 # 'import site' failed
